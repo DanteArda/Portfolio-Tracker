@@ -18,6 +18,10 @@ class Portfolio:
 
     class History:
         export_list_csv = None
+        portfolio_history_dataframe = None
+
+        def convert_csv_to_dataframe(self, pathfile):
+            self.portfolio_history_dataframe = pandas.read_csv(pathfile)
 
     def read(self, apiKey):
         Trading212 = builder.Builder(apiKey)
