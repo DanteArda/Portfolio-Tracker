@@ -30,6 +30,9 @@ class Builder:
     
     def get_paid_out_dividends(self, query : dict = EMPTY_QUERY):
         return self.get_response("https://live.trading212.com/api/v0/history/dividends", query)
+    
+    def get_export_list(self):
+        return self.get_response("https://live.trading212.com/api/v0/history/exports")
 
     # Web Socket
     def get_response(self, url : str, params : dict = None) -> dict:
@@ -38,4 +41,4 @@ class Builder:
 
         response = requests.get(url, headers=headers, params=params)
 
-        return response.json()
+        return response.json() if response.status_code == 200 else response.status_code

@@ -1,5 +1,7 @@
 ### Auto-Generated Files ###
 /.venv
+**/__pycache__
+**/*.pyc
 
 ### Testing ###
 /.test
