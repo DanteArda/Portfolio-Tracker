@@ -22,6 +22,21 @@ class Portfolio:
 
         def convert_csv_to_dataframe(self, pathfile):
             self.portfolio_history_dataframe = pandas.read_csv(pathfile)
+            self.__clean__()
+
+        def __clean__(self):
+            dataframe = self.portfolio_history_dataframe
+
+            # Remove every Column except Action, Time and Total
+            # Remove every Row except Market buy and Market sell
+            clean_dataframe = dataframe.loc[dataframe["Action"].isin(["Market buy", "Market sell"])]
+            clean_dataframe = clean_dataframe.filter(items=["Action", "Time", "Total"])
+
+            # Ensure each Time value is consistent
+            clean_dataframe["Time"] = dataframe["Time"].apply(lambda time: pandas.to_datetime(time))
+
+            self.portfolio_history_dataframe = clean_dataframe
+            
 
     def read(self, apiKey):
         Trading212 = builder.Builder(apiKey)
