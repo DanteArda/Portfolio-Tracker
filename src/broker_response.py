@@ -24,9 +24,23 @@ class Broker:
     """
     Class that represents a Financial Broker
     """
-    def __init__(self, apiKey):
-        self.apiKey = apiKey
+    def __init__(self, api_key):
+        self.api_key = api_key
 
+    # Abstract Method
+    def auth_api(self) -> bool:
+        """
+        Does a quick request to validate an API key
+
+        Recommended by checking that a status code of 200 is returned
+
+        This is an abstract method, it should be modified to suit each Broker's API
+
+        :returns: bool stating whether the API is valid or not (assuming 401 is the only instance where API is bad)
+        """
+        raise NotImplementedError(f"'{self.__class__.__name__}' must impliment the abstract 'auth_api' method")
+
+    # Websocket
     def post_response(self, url : str, payload : dict):
         """
         Sends a request to perform an action from url
@@ -37,7 +51,7 @@ class Broker:
         """
         headers = {
             "Content-Type": "application/json",
-            "Authorization": self.apiKey,
+            "Authorization": self.api_key,
         }
 
         response = requests.post(url, json=payload, headers=headers)
@@ -54,7 +68,7 @@ class Broker:
         :returns: json parsed as dict
         """
 
-        headers = {"Authorization": self.apiKey}
+        headers = {"Authorization": self.api_key}
 
         response = requests.get(url, headers=headers, params=query)
 
@@ -68,8 +82,17 @@ class Trading212(Broker):
     Trading212: https://www.trading212.com/\n
     Trading212 API Docs: https://t212public-api-docs.redoc.ly/
     """
-    def __init__(self, apiKey):
-        super().__init__(apiKey)
+    def __init__(self, api_key):
+        super().__init__(api_key)
+
+    def auth_api(self) -> bool:
+        try:
+            self.get_account_cash()
+        except BadStatusCodeError as Response:
+            status_code = Response.status_code
+
+            return status_code != 401
+        return True
 
     # Instruments Metadata
 
