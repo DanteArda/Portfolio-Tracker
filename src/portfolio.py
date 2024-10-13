@@ -1,5 +1,6 @@
 import broker_response
 from exception import *
+from currency_symbols import CurrencySymbols
 
 class Portfolio:
     """
@@ -12,15 +13,21 @@ class Portfolio:
         free = 0 # uninvested cash
         invested = 0 # invested cash (not including unrealized gains)
         ppl = 0 # profit or total of unrealized gains
+        ppl_pc = 0 # percentage difference between invested and total
         result = 0 # realized gains
         total = 0 # entire portfolio value
-        dividend_total = 0 # all the dividends 
+        dividend_total = 0 # all the dividends
+        last_dividend = 0
+        currency_code = "USD"
+        currency_symbol = "$"
 
     class Stock:
         """Class representing the stocks held"""
+        total = 0 # all stocks value combined
 
     class Crypto:
         """Class representing any Crypto held via on an Exchange or Personal Wallet (if it has an API)"""
+        total = 0 # all crypto coins value combined
 
     class History:
         """Class for storing any movements, """
@@ -40,6 +47,15 @@ class Portfolio:
         """Check if the api_key_map has been assigned and validated"""
         if self.api_key_map: return
         raise PrematureEvaluationError("api_key_map", self)
+    
+    @staticmethod
+    def percentage_change(previous : int, current : int):
+        """Return the percentage change in non-decimal unrounded form"""
+        if previous == current: return 100
+        try:
+            return ((current - previous) / previous) * 100
+        except:
+            return 0
 
     def read(self):
         """Read all APIs and blend into Portfolio's attributes"""
@@ -56,6 +72,9 @@ class Portfolio:
                 # Other
                 case _:
                     raise AttributeError(f"Portfolio object has no case for {Broker}")
+                
+        # end of blending summary
+        self.Cash.ppl_pc = self.percentage_change(self.Cash.invested, self.Cash.total)
 
     def __Trading212__(self):
         """Blend Trading212 API into Portfolio's attributes"""
@@ -80,6 +99,16 @@ class Portfolio:
         self.Cash.ppl = account_cash["ppl"]
         self.Cash.result = account_cash["result"]
         self.Cash.total = account_cash["total"]
+
+        account_metadata = Trading212.get_account_metadata()
+        """
+        {
+            "currencyCode": "USD",
+            "id": 0
+        }
+        """
+        self.Cash.currency_code = account_metadata["currencyCode"]
+        self.Cash.currency_symbol = CurrencySymbols.get_symbol(self.Cash.currency_code)
         
         # Historical items
         paid_out_dividends = Trading212.get_paid_out_dividends()
@@ -102,3 +131,4 @@ class Portfolio:
         """
         for payment in paid_out_dividends['items']:
             self.Cash.dividend_total  += payment["amount"]
+            self.Cash.last_dividend = payment["amount"]
