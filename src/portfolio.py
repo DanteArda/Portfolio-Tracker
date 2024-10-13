@@ -5,7 +5,7 @@ class Portfolio:
     """
     Class Representing the whole portfolio
     """
-    api_key_map = None
+    api_key_map = dict()
 
     class Cash:
         """Class representing the portfolio value, and any free cash"""
@@ -60,7 +60,7 @@ class Portfolio:
     def __Trading212__(self):
         """Blend Trading212 API into Portfolio's attributes"""
         self.__precheck__()
-        Trading212 = broker_response.Trading212(self.api_key_map["Trading212"])
+        Trading212 = broker_response.Trading212(self.api_key_map["Trading212"]["api_key"])
 
         # Account Data
         account_cash = Trading212.get_account_cash()
