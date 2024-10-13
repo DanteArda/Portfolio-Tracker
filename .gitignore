@@ -1,3 +1,7 @@
+### Testing ###
+src/app.py
+
+### Auto-Generated###
 .venv
 **/__pycache__
 .vscode

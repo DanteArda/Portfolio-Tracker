@@ -20,6 +20,19 @@ DEFAULT_PAYLOAD = {
     }
 }
 
+def get_class_from_str(name : str, *args, **kwargs):
+    """
+    Get any class instace from broker_response
+
+    :param name: The name of the class instance
+    :param *args: If the class requires an init variable
+    :returns: an Instance of the class
+    """
+    cls = globals().get(name)
+    if cls is None: raise ValueError(f"Class {name} not found")
+
+    return cls(*args, **kwargs)
+
 class Broker:
     """
     Class that represents a Financial Broker
