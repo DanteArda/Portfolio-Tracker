@@ -16,3 +16,10 @@ class BadStatusCodeError(Exception):
         self.message = return_status_code_message()
 
         super().__init__(f"{self.status_code}: {self.message}")
+        
+class PrematureEvaluationError(Exception):
+    """Returns an error if a required variable isn't assigned before being evaluated"""
+    def __init__(self, variable, cls):
+        self.variable = variable
+        self.class_name = cls.__class__.__name__
+        super().__init__(f"{self.class_name}.{self.variable} must be assigned before being evaluated")
