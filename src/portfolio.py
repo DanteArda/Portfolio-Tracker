@@ -1,6 +1,9 @@
 import broker_response
 from exception import *
 from currency_symbols import CurrencySymbols
+import pandas
+
+PANDAS_COLUMN_DEFAULT = ["Ticker", "Quantity", "Average Price"]
 
 class Portfolio:
     """
@@ -18,16 +21,18 @@ class Portfolio:
         total = 0 # entire portfolio value
         dividend_total = 0 # all the dividends
         last_dividend = 0
-        currency_code = "USD"
-        currency_symbol = "$"
+        currency_code = "UNKNOWN"
+        currency_symbol = "?"
 
     class Stock:
         """Class representing the stocks held"""
         total = 0 # all stocks value combined
+        holdings = pandas.DataFrame(columns=PANDAS_COLUMN_DEFAULT).set_index("Ticker", inplace=True)
 
     class Crypto:
         """Class representing any Crypto held via on an Exchange or Personal Wallet (if it has an API)"""
         total = 0 # all crypto coins value combined
+        holdings = pandas.DataFrame(columns=PANDAS_COLUMN_DEFAULT).set_index("Ticker", inplace=True)
 
     class History:
         """Class for storing any movements, """
@@ -94,8 +99,8 @@ class Portfolio:
             "total": 0
         }
         """
-        self.Cash.free += account_cash["free"]
-        self.Cash.invested += account_cash["invested"]
+        self.Cash.free = account_cash["free"]
+        self.Cash.invested = account_cash["invested"]
         self.Cash.ppl = account_cash["ppl"]
         self.Cash.result = account_cash["result"]
         self.Cash.total = account_cash["total"]
@@ -110,6 +115,27 @@ class Portfolio:
         self.Cash.currency_code = account_metadata["currencyCode"]
         self.Cash.currency_symbol = CurrencySymbols.get_symbol(self.Cash.currency_code)
         
+        # Personal Portfolio
+        all_open_positions = Trading212.get_all_open_positions()
+        """
+        [
+            {
+                "averagePrice": 0,
+                "currentPrice": 0,
+                "frontend": "API",
+                "fxPpl": 0,
+                "initialFillDate": "2019-08-24T14:15:22Z",
+                "maxBuy": 0,
+                "maxSell": 0,
+                "pieQuantity": 0,
+                "ppl": 0,
+                "quantity": 0,
+                "ticker": "AAPL_US_EQ"
+            }
+        ]
+        """
+        
+
         # Historical items
         paid_out_dividends = Trading212.get_paid_out_dividends()
         """

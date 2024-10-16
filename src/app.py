@@ -89,9 +89,9 @@ def dashboard():
     st.divider()
 
     # Asset Allocation
-    st.progress(70, text="Cash")
-    st.progress(20, text="Stocks")
-    st.progress(10, text="Crypto")
+    #st.progress(70, text="Cash")
+    #st.progress(20, text="Stocks")
+    #st.progress(10, text="Crypto")
 
 def market_benchmark():
     st.title("Benchmark Portfolio")
