@@ -10,7 +10,21 @@ class Trading212:
 
     # Account Data
     def fetch_account_cash(self):
+        """Fetch all account balances."""
         return self.request("GET", "/api/v0/equity/account/cash")
+    
+    def fetch_account_metadata(self):
+        """Fetch all account information."""
+        return self.request("GET", "/api/v0/equity/account/info")
+    
+    # Personal Portfolio
+    def fetch_all_open_positions(self):
+        """Fetch all open positions."""
+        return self.request("GET", "/api/v0/equity/portfolio")
+    
+    def fetch_a_specifc_position(self, ticker : str):
+        """Fetch an open position by ticker."""
+        return self.request("GET", f"/api/v0/equity/portfolio/{ticker}")
 
     # API
     def request(self, method, path) -> dict:
