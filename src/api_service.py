@@ -11,8 +11,7 @@ class Trading212:
         "limit" : 50
     }
 
-    # TODO change this varname
-    DEFAULT_QUERY_PARAMETERS_TRANSACTION = {
+    DEFAULT_TRANSACTION_QUERY_PARAMETERS = {
         "cursor" : "0",
         "time" : "2000-01-01 00:00:00",
         "limit" : 50
@@ -72,7 +71,7 @@ class Trading212:
         """Request a csv export of the account's orders, dividends and transactions history"""
         return self.request("POST", "/api/v0/history/exports", query)
 
-    def transaction_list(self, query : dict = DEFAULT_QUERY_PARAMETERS_TRANSACTION):
+    def transaction_list(self, query : dict = DEFAULT_TRANSACTION_QUERY_PARAMETERS):
         """Return monetary movements in and out of the account"""
         return self.request("GET", "/api/v0/history/transactions", query)
 
