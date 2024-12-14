@@ -104,4 +104,5 @@ class Trading212:
         else:
             pass
 
-        return response.json()
+        if response.status_code == 200: return response.json()
+        return {}
