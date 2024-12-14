@@ -9,21 +9,11 @@ class Portfolio:
 
         Args:
             cls (object): A general object.
-
+            
         Returns:
             dict: The filtered attributes.
         """
         return {key : value for key, value in cls.__dict__.items() if not key.startswith('_')}
-
-    # Attributes - Cash
-    def filter_cash_attributes(self) -> dict:
-        """Returns filter_attributes of calling instance."""
-        return Portfolio.filter_attributes(self.Cash)
-
-    @staticmethod
-    def filter_new_cash_attributes() -> dict:
-        """Returns filter_attributes with Portfolio.Cash as parameters."""
-        return Portfolio.filter_attributes(Portfolio.Cash)
     
     # Attributes - Setting
     @staticmethod
