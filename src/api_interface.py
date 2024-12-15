@@ -17,4 +17,4 @@ class Hook:
         """Read and Write from broker api to the Portfolio class."""
         cash_dict = self.platform.get_cash()
 
-        self.portfolio.write_to(self.portfolio.Cash, cash_dict)
+        self.portfolio.write(self.portfolio.Cash, cash_dict)

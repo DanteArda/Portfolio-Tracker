@@ -7,7 +7,7 @@ class _AbstractAPIService(ABC):
     cash_dict = Portfolio.filter_attributes(Portfolio.Cash)
 
     @abstractmethod
-    def get_cash(self):
+    def get_cash(self) -> "Portfolio":
         """Get numerical and liquid data about a Portfolio"""
         pass
 
