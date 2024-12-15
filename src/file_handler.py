@@ -25,7 +25,7 @@ class Config:
         Set the key associated to the platform.
 
         Args:
-            platform (str): The trading platfrom the key belongs to.
+            platform (str): The trading platform the key belongs to.
             value (str): The key value.
             name (str): The key name, default is "API_key".
         """
@@ -52,7 +52,7 @@ class Config:
         Check if a section exists for a trading platform.
 
         Args:
-            section (str): The section name to check.
+            platform (str): The section name to check.
 
         Returns:
             bool: True if the section is found, False otherwise.

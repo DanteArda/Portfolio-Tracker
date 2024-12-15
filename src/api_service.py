@@ -17,7 +17,7 @@ class Trading212:
         "limit" : 50
     }
 
-    DEFAULT_BODY_SCHMEA = {
+    DEFAULT_BODY_SCHEMA = {
         "dataIncluded" : {
             "includeDividends" : True,
             "includeInterest" : True,

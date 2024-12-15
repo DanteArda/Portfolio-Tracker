@@ -14,8 +14,7 @@ class Portfolio:
             dict: The filtered attributes.
         """
         return {key : value for key, value in cls.__dict__.items() if not key.startswith('_')}
-    
-    # Attributes - Setting
+
     @staticmethod
     def write_to(cls : object, data : dict):
         """
@@ -43,6 +42,7 @@ class Portfolio:
             realized (int): Total realized profit or loss.
             total (int): Total cash held after price movements.
             total_dividend (int): Total interest from dividend payments.
+            currency_metadata (str): The main currency of the portfolio.
         """
         blocked = 0
         free = 0
@@ -51,3 +51,4 @@ class Portfolio:
         realized = 0
         total = 0
         total_dividend = 0
+        currency_metadata = "$"
